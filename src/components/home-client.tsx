@@ -8,11 +8,12 @@ import { Button } from "@/components/ui/button";
 import { PromptGrid } from '@/components/prompt-grid';
 import { AppSidebarContent } from '@/components/sidebar-content';
 import { Sidebar, SidebarInset, useSidebar } from "@/components/ui/sidebar";
-import { Search, Menu, Sun, Moon } from 'lucide-react';
+import { Search, Menu, Sun, Moon, Feather } from 'lucide-react'; // Added Feather
 import { useFavorites } from '@/hooks/use-favorites';
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "next-themes";
 import { useIsMobile } from "@/hooks/use-mobile"; // Import useIsMobile hook
+import { cn } from "@/lib/utils";
 
 interface HomeClientProps {
   initialPrompts: Prompt[];
@@ -86,49 +87,58 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
         />
       </Sidebar>
       <SidebarInset>
-        <main className="flex flex-col flex-1 h-full"> {/* Use flex-1 for main content */}
-          {/* Header with Search & Theme Toggle */}
-          <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4 sm:px-6 flex-shrink-0">
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={toggleSidebar}
-              className="md:hidden" // Only show on mobile
-              aria-label="Toggle Menu"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
+         <main className="flex flex-col flex-1 h-full overflow-x-hidden"> {/* Use flex-1 and added overflow-x-hidden */}
+           {/* Header with Search & Theme Toggle */}
+           <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 sm:px-6 flex-shrink-0 shadow-sm">
+             <Button
+               size="icon"
+               variant="ghost"
+               onClick={toggleSidebar}
+               className="md:hidden rounded-full" // Only show on mobile, make round
+               aria-label="Toggle Menu"
+             >
+               <Menu className="h-5 w-5" />
+             </Button>
 
-            <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search prompts..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full appearance-none bg-background pl-8 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 md:w-2/3 lg:w-1/3" // Removed focus ring for cleaner look
-              />
-            </div>
-            {mounted && ( // Render theme toggle only when mounted
-              <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle Theme">
-                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </Button>
-            )}
-          </header>
-
-          {/* Prompt Grid - Show Skeleton or Grid */}
-          <div className="flex-grow overflow-y-auto"> {/* Allow vertical scroll */}
-            {favoritesLoading && currentFilter === 'favorites' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4 masonry">
-                {[...Array(10)].map((_, i) => (
-                  <Skeleton key={i} className="h-48 mb-4 rounded-lg break-inside-avoid" />
-                ))}
+             {/* Logo for Mobile */}
+              <div className="flex items-center gap-2 md:hidden">
+                <Feather className="h-6 w-6 text-accent" />
+                <span className="font-semibold text-lg">Thought Whisperer</span>
               </div>
-            ) : (
-              <PromptGrid prompts={filteredPrompts} />
-            )}
-          </div>
-        </main>
+
+
+             <div className="relative flex-1 ml-auto flex items-center justify-end gap-2">
+               <div className="relative flex-1 max-w-md"> {/* Limit search bar width */}
+                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                 <Input
+                   type="search"
+                   placeholder="Search prompts..."
+                   value={searchTerm}
+                   onChange={(e) => setSearchTerm(e.target.value)}
+                   className="w-full appearance-none bg-muted rounded-full pl-10 pr-4 py-2 shadow-inner focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 md:w-full"
+                 />
+               </div>
+                {mounted && ( // Render theme toggle only when mounted
+                 <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle Theme" className="rounded-full">
+                   {theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches) ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                 </Button>
+                )}
+             </div>
+           </header>
+
+           {/* Prompt Grid - Show Skeleton or Grid */}
+           <div className="flex-grow overflow-y-auto"> {/* Allow vertical scroll */}
+             {favoritesLoading && currentFilter === 'favorites' ? (
+               <div className="p-4 sm:p-6 columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-4">
+                 {[...Array(10)].map((_, i) => (
+                   <Skeleton key={i} className="h-48 mb-4 rounded-lg break-inside-avoid" />
+                 ))}
+               </div>
+             ) : (
+               <PromptGrid prompts={filteredPrompts} />
+             )}
+           </div>
+         </main>
       </SidebarInset>
     </>
   );

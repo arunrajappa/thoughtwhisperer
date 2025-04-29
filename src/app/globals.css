@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  min-height: 100vh; /* Ensure body takes full viewport height */
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%; /* Light Background */
@@ -46,40 +41,40 @@ body {
     --sidebar-ring: 174 100% 29%; /* Teal */
   }
   .dark {
-    --background: 240 10% 3.9%; /* Dark Background */
-    --background-start-rgb: 30, 41, 59; /* slate-800 */
-    --background-end-rgb: 15, 23, 42; /* slate-900 */
-    --foreground: 0 0% 98%; /* Light Foreground */
-    --card: 240 5.9% 10%; /* Darker Card */
-    --card-foreground: 0 0% 98%;
-    --popover: 240 5.9% 10%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 174 100% 29%; /* Teal */
+    --background: 224 71.4% 4.1%; /* Darker Blue Background */
+    --background-start-rgb: 15, 23, 42; /* slate-900 */
+    --background-end-rgb: 10, 15, 28; /* Even darker slate-like */
+    --foreground: 210 20% 98%; /* Lighter Foreground */
+    --card: 224 71.4% 6%; /* Slightly lighter dark card */
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 6%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 210 20% 98%;
+    --primary-foreground: 224 71.4% 11.1%;
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 174 100% 35%; /* Slightly brighter Teal for dark mode contrast */
     --accent-foreground: 0 0% 98%; /* White */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 174 100% 29%; /* Teal */
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%; /* Use secondary for input background */
+    --ring: 174 100% 35%; /* Slightly brighter Teal ring */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%; /* Dark sidebar */
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 174 100% 29%; /* Teal */
+    --sidebar-background: 224 71.4% 5%; /* Very dark sidebar */
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-primary: 174 100% 35%; /* Teal */
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 174 100% 29%; /* Teal */
+    --sidebar-accent: 174 100% 35%; /* Teal */
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 174 100% 29%; /* Teal */
+    --sidebar-border: 215 27.9% 16.9%;
+    --sidebar-ring: 174 100% 35%; /* Teal */
   }
 }
 
@@ -87,7 +82,41 @@ body {
   * {
     @apply border-border;
   }
+  html, body {
+     overflow-x: hidden; /* Prevent horizontal scroll */
+     height: 100%; /* Ensure html and body take full height */
+     min-height: 100vh; /* Ensure body takes full viewport height */
+  }
+
   body {
     @apply bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-[rgb(var(--background-end-rgb))] text-foreground;
+    /* Smooth scrolling */
+     scroll-behavior: smooth;
+  }
+  /* Custom Scrollbar Styles (Optional) */
+  ::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+    height: 8px; /* Height for horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/50; /* Track color */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent/60; /* Thumb color */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+     @apply bg-accent/80; /* Thumb color on hover */
+  }
+}
+
+/* Style for the masonry layout */
+@supports (grid-template-rows: masonry) {
+  .masonry {
+    grid-template-rows: masonry;
   }
 }
