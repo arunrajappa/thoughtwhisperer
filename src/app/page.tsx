@@ -1,5 +1,8 @@
+// src/app/page.tsx
 import { getPrompts, getCategories } from '@/lib/prompts';
-import { HomeClient } from '@/components/home-client'; // Import the renamed client component
+import { HomeClient } from '@/components/home-client';
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebarContent } from '@/components/sidebar-content';
 
 // Revalidate data periodically if prompts.md might change
 // Or use 'force-dynamic' if changes should be reflected immediately without rebuilds
@@ -10,11 +13,16 @@ export default async function Page() {
   const initialPrompts = await getPrompts();
   const initialCategories = await getCategories();
 
-  // Render the client component, passing the server-fetched data as props
+  // Pass data to the client component
+  // Wrap with SidebarProvider here at the page level
   return (
-    <HomeClient
-      initialPrompts={initialPrompts}
-      initialCategories={initialCategories}
-    />
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex h-full"> {/* Ensure the container takes full height */}
+        <HomeClient
+          initialPrompts={initialPrompts}
+          initialCategories={initialCategories}
+        />
+      </div>
+    </SidebarProvider>
   );
 }

@@ -1,34 +1,44 @@
 // src/components/home-client.tsx
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { Prompt } from '@/lib/prompts';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PromptGrid } from '@/components/prompt-grid';
 import { AppSidebarContent } from '@/components/sidebar-content';
-import { SidebarProvider, Sidebar, SidebarInset, useSidebar } from "@/components/ui/sidebar"; // Import useSidebar
-import { Search, Menu } from 'lucide-react';
+import { Sidebar, SidebarInset, useSidebar } from "@/components/ui/sidebar";
+import { Search, Menu, Sun, Moon } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
-import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton
+import { Skeleton } from "@/components/ui/skeleton";
+import { useTheme } from "next-themes";
+import { useIsMobile } from "@/hooks/use-mobile"; // Import useIsMobile hook
 
 interface HomeClientProps {
   initialPrompts: Prompt[];
   initialCategories: string[];
 }
 
-function HomeClientContent({ initialPrompts, initialCategories }: HomeClientProps) {
+export function HomeClient({ initialPrompts, initialCategories }: HomeClientProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
-  const { favorites, isLoading: favoritesLoading } = useFavorites(); // Get isLoading state
-  const { toggleSidebar } = useSidebar(); // Get toggleSidebar function
+  const { favorites, isLoading: favoritesLoading } = useFavorites();
+  const { toggleSidebar, open: sidebarOpen } = useSidebar(); // Get toggleSidebar and open state
+  const { theme, setTheme } = useTheme();
+  const isMobile = useIsMobile();
+  const [mounted, setMounted] = useState(false); // For preventing hydration mismatch with theme
+
+
+  // Ensure component is mounted before rendering theme-dependent UI
+   useEffect(() => {
+     setMounted(true);
+   }, []);
 
   const prompts = initialPrompts;
   const categories = initialCategories;
 
   const filteredPrompts = useMemo(() => {
     if (favoritesLoading && currentFilter === 'favorites') {
-      // If favorites are loading and the filter is 'favorites', return empty array temporarily
       return [];
     }
 
@@ -50,33 +60,44 @@ function HomeClientContent({ initialPrompts, initialCategories }: HomeClientProp
     }
 
     return result;
-  }, [prompts, searchTerm, currentFilter, favorites, favoritesLoading]); // Add favoritesLoading dependency
+  }, [prompts, searchTerm, currentFilter, favorites, favoritesLoading]);
 
   const handleFilterChange = (filter: string | null) => {
     setCurrentFilter(filter);
+    // Close sidebar on mobile after selecting a filter
+    if (isMobile && sidebarOpen) {
+       toggleSidebar();
+    }
   };
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
 
   return (
     <>
       <Sidebar side="left" variant="sidebar" collapsible="icon">
-         <AppSidebarContent
-           categories={categories}
-           currentFilter={currentFilter}
-           onFilterChange={handleFilterChange}
-           favoritesLoading={favoritesLoading} // Pass loading state to sidebar
-         />
+        <AppSidebarContent
+          categories={categories}
+          currentFilter={currentFilter}
+          onFilterChange={handleFilterChange}
+          favoritesLoading={favoritesLoading}
+        />
       </Sidebar>
       <SidebarInset>
-        <main className="flex flex-col h-full">
-          {/* Header with Search */}
-          <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4 sm:px-6">
-             <div className="md:hidden">
-               {/* Use a standard Button and call toggleSidebar directly */}
-               <Button size="icon" variant="outline" onClick={toggleSidebar}>
-                 <Menu className="h-5 w-5" />
-                 <span className="sr-only">Toggle Menu</span>
-               </Button>
-             </div>
+        <main className="flex flex-col flex-1 h-full"> {/* Use flex-1 for main content */}
+          {/* Header with Search & Theme Toggle */}
+          <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4 sm:px-6 flex-shrink-0">
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={toggleSidebar}
+              className="md:hidden" // Only show on mobile
+              aria-label="Toggle Menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
 
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -85,34 +106,30 @@ function HomeClientContent({ initialPrompts, initialCategories }: HomeClientProp
                 placeholder="Search prompts..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+                className="w-full appearance-none bg-background pl-8 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 md:w-2/3 lg:w-1/3" // Removed focus ring for cleaner look
               />
             </div>
+            {mounted && ( // Render theme toggle only when mounted
+              <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle Theme">
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </Button>
+            )}
           </header>
 
           {/* Prompt Grid - Show Skeleton or Grid */}
-           <div className="flex-grow overflow-auto">
-             {favoritesLoading && currentFilter === 'favorites' ? (
-               // Show skeleton loading state for grid when filtering by favorites and loading
-               <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 p-4">
-                 {[...Array(10)].map((_, i) => (
-                    <Skeleton key={i} className="h-48 mb-4 rounded-lg" />
-                 ))}
-               </div>
-             ) : (
-                <PromptGrid prompts={filteredPrompts} />
-             )}
-           </div>
+          <div className="flex-grow overflow-y-auto"> {/* Allow vertical scroll */}
+            {favoritesLoading && currentFilter === 'favorites' ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4 masonry">
+                {[...Array(10)].map((_, i) => (
+                  <Skeleton key={i} className="h-48 mb-4 rounded-lg break-inside-avoid" />
+                ))}
+              </div>
+            ) : (
+              <PromptGrid prompts={filteredPrompts} />
+            )}
+          </div>
         </main>
       </SidebarInset>
     </>
-  );
-}
-
-export function HomeClient(props: HomeClientProps) {
-  return (
-    <SidebarProvider defaultOpen={true}>
-      <HomeClientContent {...props} />
-    </SidebarProvider>
   );
 }

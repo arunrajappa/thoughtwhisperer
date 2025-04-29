@@ -4,11 +4,14 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh; /* Ensure body takes full viewport height */
 }
 
 @layer base {
   :root {
     --background: 0 0% 100%; /* Light Background */
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 245, 245, 245;
     --foreground: 240 10% 3.9%; /* Dark Foreground */
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -44,6 +47,8 @@ body {
   }
   .dark {
     --background: 240 10% 3.9%; /* Dark Background */
+    --background-start-rgb: 30, 41, 59; /* slate-800 */
+    --background-end-rgb: 15, 23, 42; /* slate-900 */
     --foreground: 0 0% 98%; /* Light Foreground */
     --card: 240 5.9% 10%; /* Darker Card */
     --card-foreground: 0 0% 98%;
@@ -83,6 +88,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-[rgb(var(--background-end-rgb))] text-foreground;
   }
 }
