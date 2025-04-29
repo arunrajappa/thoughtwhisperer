@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useFavorites } from '@/hooks/use-favorites';
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import React from 'react';
+import React, { useMemo } from 'react'; // Import useMemo
 
 interface PromptCardProps {
   prompt: Prompt;
@@ -21,30 +21,63 @@ export function PromptCard({ prompt }: PromptCardProps) {
   const { addFavorite, removeFavorite, isFavorite, isLoading: favoritesLoading } = useFavorites();
   const favorite = isFavorite(prompt.id);
 
+  // Memoize the hashtag extraction logic
+  const { promptText, hashtags } = useMemo(() => {
+    console.log(`[PromptCard ${prompt.id}] Raw details:`, prompt.details); // Log raw details
+
+    const lines = prompt.details?.trim().split('\n') ?? [];
+    let hashtagsLine = lines[lines.length - 1] ?? ''; // Get the last line safely
+    let extractedHashtags: string[] = [];
+    let textContent = prompt.details?.trim() ?? ''; // Default to full details
+
+    console.log(`[PromptCard ${prompt.id}] All lines:`, lines);
+    console.log(`[PromptCard ${prompt.id}] Potential hashtag line:`, hashtagsLine);
+
+    if (hashtagsLine.trim().startsWith('#')) {
+      // Check if the *trimmed* last line starts with #
+      extractedHashtags = hashtagsLine
+        .split('#') // Split by #
+        .map(tag => tag.trim()) // Trim each part
+        .filter(tag => tag.length > 0); // Filter out empty strings resulting from split
+
+      // Remove the hashtag line from the displayed text
+      textContent = lines.slice(0, -1).join('\n').trim();
+
+      console.log(`[PromptCard ${prompt.id}] Hashtags found and extracted:`, extractedHashtags);
+    } else {
+      console.log(`[PromptCard ${prompt.id}] No hashtag line found.`);
+    }
+
+    return { promptText: textContent, hashtags: extractedHashtags };
+  }, [prompt.details, prompt.id]); // Depend on prompt.details and prompt.id
+
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(prompt.details);
+      // Copy only the prompt text without hashtags
+      await navigator.clipboard.writeText(promptText);
       toast({
         title: "Copied!",
-        description: "Prompt copied to clipboard.",
+        description: "Prompt text copied to clipboard.",
       });
     } catch (err) {
       console.error('Failed to copy text: ', err);
       toast({
         title: "Error",
-        description: "Failed to copy prompt.",
+        description: "Failed to copy prompt text.",
         variant: "destructive",
       });
     }
   };
 
   const handleShare = async () => {
+     // Share only the prompt text without hashtags
+    const shareData = {
+        title: prompt.title,
+        text: promptText,
+    };
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: prompt.title,
-          text: prompt.details,
-        });
+        await navigator.share(shareData);
       } catch (err) {
         // IgnoreAbortError: AbortError: Share canceled
         if (err instanceof Error && err.name !== 'AbortError') {
@@ -58,10 +91,10 @@ export function PromptCard({ prompt }: PromptCardProps) {
       }
     } else {
       // Fallback for browsers that don't support navigator.share
-      handleCopy();
+      handleCopy(); // Copy text instead
       toast({
         title: "Copied to clipboard",
-        description: "Web Share API not supported, prompt copied instead.",
+        description: "Web Share API not supported, prompt text copied instead.",
       });
     }
   };
@@ -82,15 +115,6 @@ export function PromptCard({ prompt }: PromptCardProps) {
     }
   };
 
-  // Extract hashtags from the last line of the prompt details
-  const detailsLines = prompt.details.trim().split('\n');
-  const hashtagsLine = detailsLines.pop(); // Get the last line
-  const hashtags = hashtagsLine && hashtagsLine.startsWith('#')
-    ? hashtagsLine.split('#').slice(1).map(tag => tag.trim())
-    : [];
-
-  // Extract prompt text excluding hashtags
-  const promptText = detailsLines.join('\n').trim();
 
   return (
     <Card className="h-full flex flex-col break-inside-avoid mb-4 shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out bg-card border border-border rounded-lg overflow-hidden group">
@@ -98,11 +122,11 @@ export function PromptCard({ prompt }: PromptCardProps) {
         <CardTitle className="text-base font-semibold group-hover:text-accent transition-colors">{prompt.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow text-sm text-muted-foreground whitespace-pre-wrap pb-4">
-         {/* Display raw details, relying on whitespace-pre-wrap for formatting */}
+         {/* Display prompt text excluding hashtags */}
          {promptText}
       </CardContent>
       <CardFooter className="flex flex-wrap justify-between items-center pt-3 border-t mt-auto bg-muted/30 dark:bg-muted/10 px-4 py-2">
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 flex-wrap gap-y-1"> {/* Added flex-wrap and gap-y */}
             {hashtags.map((tag, index) => (
                 <Badge key={index} variant="secondary" className="text-xs capitalize flex items-center">
                   <Hash className="h-3 w-3 mr-1" />
@@ -131,9 +155,9 @@ export function PromptCard({ prompt }: PromptCardProps) {
               variant="ghost"
               size="icon"
               onClick={handleShare}
-              aria-label="Share prompt"
+              aria-label="Share prompt text"
               className="h-8 w-8 rounded-full hover:bg-accent/10"
-              title="Share prompt"
+              title="Share prompt text"
            >
              <Share2 className="h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors duration-200" />
            </Button>

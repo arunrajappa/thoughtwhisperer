@@ -35,12 +35,12 @@ For each, offer a sacred dare—one bold act to reclaim my path. No sugar, only 
 ## Subconscious Leak Detector
 Become my mind’s silent observer. Surface one deeply-rooted belief that distorts my lens.
 Write it as a dark fairy tale—and flip it with a healing spell-mantra.
-#thoughtwhisperer
+#coach #mantra
 
 ## Long-Term Pattern Mapper
 Act as a psycho-cartographer. Map my top 5 blindspots like ancient traps.
 For each, name it, mark its terrain (when/where it appears), and give me a lens shift + a ritual disruptor.
-#thoughtwhisperer
+#coach #cartographer #therapist
 
 ---
 
@@ -50,32 +50,32 @@ For each, name it, mark its terrain (when/where it appears), and give me a lens 
 Use evidence-based sorcery to evaluate [Insert Health Practice].
 Rate it on real-world magic, placebo power, and lifestyle resonance.
 End with: “Bless it, Hack it, or Bin it?”
-#thoughtwhisperer
+#doctor #researcher
 
 ## Longevity Codex
 Design my daily Codex of Longevity: 5 keystone habits with evidence ranks, soul alignment, and ripple effect.
 Add one myth I need to delete from my inner OS.
-#thoughtwhisperer
+#trainer #coach
 
 ## AM Vitality Spell
 Write a 30-minute morning incantation to charge my metabolism, mind, and mood.
 Include breathwork, micro-movement, mantra, and inner weather check.
-#thoughtwhisperer
+#trainer #coach
 
 ## Fitness Forking Path
 Show a Choose-Your-Own-Adventure path: Lifting vs Running.
-Use the voice of my 70-year-old self to weigh joints, joy, clarity, and stamina.
-#thoughtwhisperer
+Use the voice of my 70-year-old self to compare joy, clarity, and stamina.
+#trainer #weights #running
 
 ## Tradition vs. Truth
-Put soaked almonds or chyavanprash on trial.
+Put soaked almonds on trial - does it help improve memory?
 Compare ancient wisdom to modern biochemistry. Deliver verdicts with love and logic.
-#thoughtwhisperer
+#research #sceptic
 
 ## Rapid Health Audit
 Use EBM Sort A to lightning-analyze: [Insert Topic].
 Give me 3-point wisdom: strength of evidence, net benefit, and a direct Yes/No.
-#thoughtwhisperer
+#EBM #research #wisdom
 
 ---
 
