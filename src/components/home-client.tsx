@@ -39,18 +39,20 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
   const categories = initialCategories;
 
   const filteredPrompts = useMemo(() => {
-    if (favoritesLoading && currentFilter === 'favorites') {
-      return [];
-    }
-
+    // Get all prompts initially
     let result = prompts;
 
+    // Filter by category or favorites
     if (currentFilter === 'favorites') {
-      result = result.filter(prompt => favorites.includes(prompt.id));
+       // If the favorites filter is active, filter based on the favorites list
+       result = result.filter(prompt => favorites.includes(prompt.id));
     } else if (currentFilter) {
-      result = result.filter(prompt => prompt.category === currentFilter);
+       // If a category filter is active
+       result = result.filter(prompt => prompt.category === currentFilter);
     }
+    // If no filter is active (currentFilter is null), result remains initialPrompts
 
+    // Apply search term filtering *after* category/favorites filtering
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       result = result.filter(prompt =>
@@ -61,7 +63,8 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
     }
 
     return result;
-  }, [prompts, searchTerm, currentFilter, favorites, favoritesLoading]);
+    // favoritesLoading is handled by the skeleton display logic, no need to include it here
+  }, [prompts, searchTerm, currentFilter, favorites]);
 
   const handleFilterChange = (filter: string | null) => {
     setCurrentFilter(filter);
@@ -120,7 +123,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
                </div>
                 {mounted && ( // Render theme toggle only when mounted
                  <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle Theme" className="rounded-full">
-                   {theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches) ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                   {theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                  </Button>
                 )}
              </div>

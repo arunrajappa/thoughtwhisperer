@@ -14,8 +14,11 @@ export function useFavorites() {
     if (typeof cookieValue === 'string') {
         try {
             const parsedFavorites = JSON.parse(cookieValue);
-            if (Array.isArray(parsedFavorites)) {
+            if (Array.isArray(parsedFavorites) && parsedFavorites.every(item => typeof item === 'string')) {
               initialFavorites = parsedFavorites;
+            } else {
+               console.warn("Invalid data format in favorites cookie. Resetting.");
+               deleteCookie(FAVORITES_COOKIE_NAME); // Delete invalid cookie
             }
         } catch (e) {
             console.error("Error parsing favorites cookie:", e);
@@ -33,6 +36,7 @@ export function useFavorites() {
      setCookie(FAVORITES_COOKIE_NAME, JSON.stringify(updatedFavorites), {
         maxAge: 60 * 60 * 24 * 365, // 1 year
         path: '/',
+        sameSite: 'lax', // Add SameSite attribute for security
       });
   };
 
