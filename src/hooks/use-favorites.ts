@@ -5,21 +5,28 @@ const FAVORITES_COOKIE_NAME = 'favoritePrompts';
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Add loading state
 
   useEffect(() => {
+    setIsLoading(true); // Start loading
     const cookieValue = getCookie(FAVORITES_COOKIE_NAME);
+    let initialFavorites: string[] = [];
     if (typeof cookieValue === 'string') {
         try {
             const parsedFavorites = JSON.parse(cookieValue);
             if (Array.isArray(parsedFavorites)) {
-              setFavorites(parsedFavorites);
+              initialFavorites = parsedFavorites;
             }
         } catch (e) {
             console.error("Error parsing favorites cookie:", e);
-            // Clear invalid cookie
+            // Clear invalid cookie if parsing fails
             deleteCookie(FAVORITES_COOKIE_NAME);
         }
     }
+    setFavorites(initialFavorites);
+    setIsLoading(false); // Finish loading after setting state
+    // Intentionally run only once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateCookie = (updatedFavorites: string[]) => {
@@ -55,5 +62,5 @@ export function useFavorites() {
     return favorites.includes(promptId);
   }, [favorites]);
 
-  return { favorites, addFavorite, removeFavorite, isFavorite };
+  return { favorites, addFavorite, removeFavorite, isFavorite, isLoading }; // Return loading state
 }

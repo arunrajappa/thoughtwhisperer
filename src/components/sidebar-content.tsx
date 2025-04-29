@@ -1,19 +1,23 @@
+// src/components/sidebar-content.tsx
 'use client';
 
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sidebar, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { Sidebar, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSkeleton } from "@/components/ui/sidebar"; // Import Skeleton
 import { Tag, Star, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Skeleton } from "@/components/ui/skeleton"; // Import general Skeleton
+
 
 interface SidebarContentProps {
   categories: string[];
   currentFilter: string | null;
   onFilterChange: (filter: string | null) => void;
+  favoritesLoading: boolean; // Receive loading state
 }
 
-export function AppSidebarContent({ categories, currentFilter, onFilterChange }: SidebarContentProps) {
+export function AppSidebarContent({ categories, currentFilter, onFilterChange, favoritesLoading }: SidebarContentProps) {
   const pathname = usePathname();
   const isFavoritesActive = currentFilter === 'favorites';
   const isAllActive = currentFilter === null;
@@ -36,17 +40,24 @@ export function AppSidebarContent({ categories, currentFilter, onFilterChange }:
               All Prompts
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={() => onFilterChange('favorites')}
-              isActive={isFavoritesActive}
-              className={cn("w-full justify-start", isFavoritesActive && "bg-accent text-accent-foreground")}
-              aria-current={isFavoritesActive ? 'page' : undefined}
-            >
-              <Star className="h-4 w-4 mr-2" />
-              Favorites
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          {favoritesLoading ? (
+            <SidebarMenuItem>
+              <Skeleton className="h-8 w-full rounded-md" /> {/* Skeleton for Favorites */}
+            </SidebarMenuItem>
+          ) : (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => onFilterChange('favorites')}
+                isActive={isFavoritesActive}
+                className={cn("w-full justify-start", isFavoritesActive && "bg-accent text-accent-foreground")}
+                aria-current={isFavoritesActive ? 'page' : undefined}
+                disabled={favoritesLoading} // Disable button while loading
+              >
+                <Star className="h-4 w-4 mr-2" />
+                Favorites
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
 
         <hr className="my-4 border-border" />
