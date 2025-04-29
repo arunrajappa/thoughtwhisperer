@@ -42,7 +42,6 @@ Act as a psycho-cartographer. Map my top 5 blindspots like ancient traps.
 For each, name it, mark its terrain (when/where it appears), and give me a lens shift + a ritual disruptor.
 #coach #therapist
 
----
 
 # Wellness
 
@@ -77,7 +76,7 @@ Use EBM Sort A to lightning-analyze: [Insert Topic].
 Give me 3-point wisdom: strength of evidence, net benefit, and a direct Yes/No.
 #EBM #research
 
----
+
 
 # Teacher 
 
@@ -124,144 +123,148 @@ Each lesson = 1 key concept, 1 live demo, and 1 creative challenge. From basics 
 
 ## Concept Explainer (ELI5)
 Explain the concept of [complex concept, e.g., blockchain, quantum computing] like I'm 5 years old.
+#concept #explainer
 
 ## Research Starting Points
 Provide 3 reliable starting points (websites, key authors, specific studies) for researching [research topic].
+#research #start
 
 ## Study Plan Outline
 Outline a basic study plan for learning [skill/subject] over the next 4 weeks, dedicating approximately [X] hours per week.
+#study #plan
 
----
 
 # Venture Capitalist
 
 ## Innovation Oracle
 Summon 3 startup ideas where AI meets human transformation.
 Show the sharp insight, first tribe, and the path to MVP magic.
-#thoughtwhisperer
+#vc #product
 
 ## Launch Sprint Blueprint
 Create a 30-day sprint map from zero to live product.
 Break into 4 arcs: Discover, Build, Test, Ship. Add soul metrics + confidence dials.
-#thoughtwhisperer
+#product #sprint
 
 ## Founder’s Canvas
 Fill a Lean Canvas for afkfoods.
 But make it come alive—add color, mood, user vignettes, and secret sauces.
-#thoughtwhisperer
+#founder #canvas
 
 ## Tribe Co-Build Map
 Design a co-creation journey with 10 early believers.
 Phase 1 = Discovery dialogues. Phase 2 = Feedback rituals. Phase 3 = Build together roadmap.
-#thoughtwhisperer
+#tribe #creation
 
 ## Product-as-Ritual
 Design a product that turns a forgettable habit into a soulful ritual.
 Show emotion arc, sense cues, and legacy loop.
-#thoughtwhisperer
+#product #rituals
 
 ## Unseen Behaviors Map
 Reveal 3 digital behaviors nobody’s building for.
 For each: define the desire, the friction, and the backdoor into their life.
-#thoughtwhisperer
+#digital #research
 
 ## Roundtable Remix
 Host a mind-summit of 3 imagined experts to solve [PROBLEM].
 Surface conflicts, synthesis, and “what they all missed.”
-#thoughtwhisperer
+#expert #query
 
----
+
 
 # Marketing Guru
 
 ## Brand Pillar Architect
 Map my brand into 3 energy centers: Thought, Craft, Career.
 For each, suggest signature formats, emotional flavor, and content rituals.
-#thoughtwhisperer
+#brand #energy
 
 ## Virality Alchemist
 Write a viral LinkedIn post about AI + culture + gaming.
 Provide 2 tone portals, a clear structure, and magnetic hashtags.
-#thoughtwhisperer
+#viral #writing
 
 ## Campaign in a Box
 Craft a 5-day micro-launch kit.
 Each day = 1 story, 1 nudge CTA, and a soul metric. Include a live dashboard sketch.
-#thoughtwhisperer
+#campaign #launch
 
 ## Community GTM Spellbook
 Launch through community energy. Seed → Spark → Spread.
 Include viral loop spells and participatory joy markers.
-#thoughtwhisperer
+#community #GTM
 
 ## Brand Story Weave
 Write my narrative like a hero's arc: Before → Catalyst → After → Now.
 150 words. Emotional glue mandatory.
-#thoughtwhisperer
+#brand #story
 
 ## Sales Funnel Map
 Draw a 5-phase funnel as if it’s an inner journey.
 User mindset, emotional triggers, and trust-building relics.
-#thoughtwhisperer
+#sales #funnel
 
 ## Content Alchemist
 Take [CORE IDEA] and fractal it across platforms: LinkedIn (wisdom), Twitter (edge), Instagram (vibe), Blog (depth).
 Keep soul signal constant.
-#thoughtwhisperer
+#content #formats
 
 ## Voice Codex
 Interview me, then write my Brand Voice Codex: tone, taboos, values, language textures, and edge triggers.
-#thoughtwhisperer
-
----
+#brand #voice
 
 # Meta-Thinker
 
 ## Weekly Mind Mirror
 Reflect on my week as a strategist-monk.
 Themes, shadows, forks in the road, and 1 takeaway to transmute into action.
-#thoughtwhisperer
+#monk #week
 
 ## Truth Check Engine
 Run truth diagnostics on [CLAIM].
 Output = confidence score, logical breadcrumbs, and what’s missing.
-#thoughtwhisperer
+#truth #checker
 
 ## Prompt Whispering
 Take a dull prompt, and awaken it.
 Rewrite it 3x: clearer, bolder, and more alive. End with a reusable spell (template).
-#thoughtwhisperer
+#prompt #heighten
 
 ## Asana Ritual Plan
 Build an Asana-style launch ritual for [PROJECT].
 3 sacred docs: vision.md, flow.md (timeline), and taskmap.md (owners + energy).
-#thoughtwhisperer
+#launch #ritual
 
----
+
 
 # Content Creator
 
 ## Blog Post Idea Generator
 Generate 5 blog post ideas about [topic].
 Include a catchy title and a brief outline for each.
+#blog #ideas
 
 ## Social Media Post - Engaging Question
 Craft an engaging question for [platform, e.g., Twitter, LinkedIn] related to [industry/topic] to spark conversation.
+#social #question
 
 ## YouTube Video Script Hook
 Write a compelling 15-second hook for a YouTube video about [video topic].
+#script #hook
 
----
 
 # Productivity Hacker
 
 ## Meeting Agenda Creator
 Create a concise meeting agenda for a 30-minute sync-up about [project name].
 Include key discussion points and time allocation.
+#meeting #agenda
 
 ## Email Summarizer
 Summarize the key points and action items from the following email thread:
 [paste email thread text].
+#text #summarizer
 
 ## Task Prioritization Assistant
 Help me prioritize these tasks based on urgency and importance:
@@ -269,17 +272,18 @@ Help me prioritize these tasks based on urgency and importance:
 - Task B: [description]
 - Task C: [description]
 Suggest a possible order.
-
----
-
+#prioritize #tasks
 
 # Creative Writer
 
 ## Character Backstory Snippet
 Write a short paragraph describing a defining childhood memory for a character who is [character trait, e.g., overly cautious, recklessly brave].
+#creative #writer
 
 ## Story Starter
 Give me a compelling opening sentence for a story set in [setting, e.g., a futuristic city, a magical forest].
+#story #starter
 
 ## Dialogue Practice
 Write a short dialogue between two characters, [Character A description] and [Character B description], who disagree about [topic of disagreement].
+#creative #writer
