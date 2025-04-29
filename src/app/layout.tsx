@@ -24,6 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
+      {/* Removed head section with Google Font links */}
       <body
        className={cn(
           "min-h-screen bg-background font-sans antialiased flex flex-col overflow-x-hidden", // Added overflow-x-hidden

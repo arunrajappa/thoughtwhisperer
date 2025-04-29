@@ -1,17 +1,16 @@
 import { marked } from 'marked'; // Use marked for robust markdown parsing
-import { v4 as uuidv4 } from 'uuid';
+// Removed uuid import as it's replaced by stable IDs
 
 // Server-only module
 import 'server-only';
 import fs from 'node:fs/promises'; // Use async fs
 import path from 'node:path';
-
+import { slugify } from './utils'; // Import slugify utility
 
 export interface Prompt {
-  id: string;
+  id: string; // ID will now be a stable slug
   title: string;
-  details: string; // Keep details as raw markdown
-  htmlDetails: string; // Add parsed HTML details
+  details: string; // Keep details as raw markdown string
   category: string;
 }
 
@@ -31,20 +30,30 @@ export async function parsePromptsMarkdown(markdownContent: string): Promise<Pro
   let currentCategory = 'Uncategorized';
   let currentTitle = '';
   let currentDetailsRaw = '';
+  let categoryIndex = 0; // Keep track of category order for potential ID conflicts
+  let promptIndexInCategory = 0; // Keep track of prompt order within category
 
   function addCurrentPrompt() {
     if (currentTitle && currentDetailsRaw) {
       const cleanTitle = currentTitle.trim();
       const cleanDetails = currentDetailsRaw.trim();
-      const htmlDetails = marked.parse(cleanDetails) as string; // Parse details to HTML
+
+      // Generate stable ID: slugify title and append indices for uniqueness
+      // This handles cases where multiple prompts might have the same title after slugification
+      let stableId = slugify(cleanTitle);
+      const potentialDuplicate = prompts.find(p => p.id === stableId);
+      if (potentialDuplicate) {
+          // Append category and prompt index to ensure uniqueness if slug conflicts
+          stableId = `${stableId}-${categoryIndex}-${promptIndexInCategory}`;
+      }
 
       prompts.push({
-        id: uuidv4(),
+        id: stableId, // Use stable, unique ID
         title: cleanTitle,
         details: cleanDetails, // Store raw markdown
-        htmlDetails: htmlDetails, // Store parsed HTML
         category: currentCategory.trim(), // Trim category name
       });
+      promptIndexInCategory++; // Increment prompt index for the current category
     }
     currentTitle = '';
     currentDetailsRaw = '';
@@ -58,13 +67,15 @@ export async function parsePromptsMarkdown(markdownContent: string): Promise<Pro
       // New Category (Level 1 Heading)
       addCurrentPrompt(); // Add previous prompt before starting new category
       currentCategory = trimmedLine.substring(2).trim();
+      categoryIndex++; // Increment category index
+      promptIndexInCategory = 0; // Reset prompt index for new category
     } else if (trimmedLine.startsWith('## ')) {
       // New Prompt Title (Level 2 Heading)
        addCurrentPrompt(); // Add previous prompt before starting new one
        currentTitle = trimmedLine.substring(3).trim();
     } else if (currentTitle && trimmedLine.length > 0 && !trimmedLine.startsWith('#')) {
       // Prompt Details line (and not another heading)
-       // Append line with a newline character to preserve structure for markdown parser
+       // Append line with a newline character to preserve structure
        currentDetailsRaw += (currentDetailsRaw ? '\n' : '') + line;
     } else if (trimmedLine === '---') {
         // Separator can indicate end of a block, add prompt if any

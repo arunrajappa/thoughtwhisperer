@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import { PromptGrid } from '@/components/prompt-grid';
 import { AppSidebarContent } from '@/components/sidebar-content';
 import { Sidebar, SidebarInset, useSidebar } from "@/components/ui/sidebar";
-import { Search, Menu, Sun, Moon, Feather } from 'lucide-react'; // Added Feather
+import { Search, Menu, Sun, Moon, Feather } from 'lucide-react';
 import { useFavorites } from '@/hooks/use-favorites';
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "next-themes";
-import { useIsMobile } from "@/hooks/use-mobile"; // Import useIsMobile hook
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 interface HomeClientProps {
@@ -24,13 +24,12 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
   const [searchTerm, setSearchTerm] = useState('');
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
   const { favorites, isLoading: favoritesLoading } = useFavorites();
-  const { toggleSidebar, open: sidebarOpen } = useSidebar(); // Get toggleSidebar and open state
+  const { toggleSidebar, open: sidebarOpen } = useSidebar();
   const { theme, setTheme } = useTheme();
   const isMobile = useIsMobile();
-  const [mounted, setMounted] = useState(false); // For preventing hydration mismatch with theme
+  const [mounted, setMounted] = useState(false);
 
 
-  // Ensure component is mounted before rendering theme-dependent UI
    useEffect(() => {
      setMounted(true);
    }, []);
@@ -39,18 +38,20 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
   const categories = initialCategories;
 
   const filteredPrompts = useMemo(() => {
-    // Get all prompts initially
     let result = prompts;
 
     // Filter by category or favorites
     if (currentFilter === 'favorites') {
-       // If the favorites filter is active, filter based on the favorites list
-       result = result.filter(prompt => favorites.includes(prompt.id));
+       // Ensure favorites array is not empty and not loading before filtering
+       if (!favoritesLoading && favorites.length > 0) {
+         result = result.filter(prompt => favorites.includes(prompt.id));
+       } else if (favoritesLoading || favorites.length === 0) {
+         // If loading or no favorites, show no prompts under the 'favorites' filter
+         result = [];
+       }
     } else if (currentFilter) {
-       // If a category filter is active
        result = result.filter(prompt => prompt.category === currentFilter);
     }
-    // If no filter is active (currentFilter is null), result remains initialPrompts
 
     // Apply search term filtering *after* category/favorites filtering
     if (searchTerm) {
@@ -63,12 +64,11 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
     }
 
     return result;
-    // favoritesLoading is handled by the skeleton display logic, no need to include it here
-  }, [prompts, searchTerm, currentFilter, favorites]);
+  }, [prompts, searchTerm, currentFilter, favorites, favoritesLoading]); // Add favoritesLoading dependency
+
 
   const handleFilterChange = (filter: string | null) => {
     setCurrentFilter(filter);
-    // Close sidebar on mobile after selecting a filter
     if (isMobile && sidebarOpen) {
        toggleSidebar();
     }
@@ -90,14 +90,14 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
         />
       </Sidebar>
       <SidebarInset>
-         <main className="flex flex-col flex-1 h-full overflow-x-hidden"> {/* Use flex-1 and added overflow-x-hidden */}
+         <main className="flex flex-col flex-1 h-full overflow-x-hidden">
            {/* Header with Search & Theme Toggle */}
            <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 sm:px-6 flex-shrink-0 shadow-sm">
              <Button
                size="icon"
                variant="ghost"
                onClick={toggleSidebar}
-               className="md:hidden rounded-full" // Only show on mobile, make round
+               className="md:hidden rounded-full"
                aria-label="Toggle Menu"
              >
                <Menu className="h-5 w-5" />
@@ -111,7 +111,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
 
 
              <div className="relative flex-1 ml-auto flex items-center justify-end gap-2">
-               <div className="relative flex-1 max-w-md"> {/* Limit search bar width */}
+               <div className="relative flex-1 max-w-md">
                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                  <Input
                    type="search"
@@ -121,7 +121,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
                    className="w-full appearance-none bg-muted rounded-full pl-10 pr-4 py-2 shadow-inner focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 md:w-full"
                  />
                </div>
-                {mounted && ( // Render theme toggle only when mounted
+                {mounted && (
                  <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle Theme" className="rounded-full">
                    {theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                  </Button>
@@ -130,14 +130,16 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
            </header>
 
            {/* Prompt Grid - Show Skeleton or Grid */}
-           <div className="flex-grow overflow-y-auto p-0 m-0"> {/* Allow vertical scroll */}
+           <div className="flex-grow overflow-y-auto p-0 m-0">
+             {/* Show skeleton ONLY when loading favorites AND the filter is set to favorites */}
              {favoritesLoading && currentFilter === 'favorites' ? (
                <div className="p-4 sm:p-6 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
-                 {[...Array(10)].map((_, i) => (
+                 {[...Array(6)].map((_, i) => ( // Reduced skeleton count
                    <Skeleton key={i} className="h-48 mb-4 rounded-lg break-inside-avoid" />
                  ))}
                </div>
              ) : (
+                // Show the grid otherwise (either not loading, or not on favorites filter, or favorites loaded)
                <PromptGrid prompts={filteredPrompts} />
              )}
            </div>

@@ -45,12 +45,15 @@ export function PromptCard({ prompt }: PromptCardProps) {
           text: prompt.details,
         });
       } catch (err) {
-        console.error('Error sharing:', err);
-         toast({
-            title: "Sharing failed",
-            description: "Could not share the prompt at this moment.",
-            variant: "destructive",
-         });
+        // IgnoreAbortError: AbortError: Share canceled
+        if (err instanceof Error && err.name !== 'AbortError') {
+            console.error('Error sharing:', err);
+            toast({
+                title: "Sharing failed",
+                description: "Could not share the prompt at this moment.",
+                variant: "destructive",
+            });
+        }
       }
     } else {
       // Fallback for browsers that don't support navigator.share
@@ -84,8 +87,8 @@ export function PromptCard({ prompt }: PromptCardProps) {
         <CardTitle className="text-base font-semibold group-hover:text-accent transition-colors">{prompt.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow text-sm text-muted-foreground whitespace-pre-wrap pb-4">
-        {/* Render markdown as HTML for basic formatting like line breaks */}
-        <div dangerouslySetInnerHTML={{ __html: prompt.details.replace(/\n/g, '<br />') }} />
+         {/* Display raw details, relying on whitespace-pre-wrap for formatting */}
+         {prompt.details}
       </CardContent>
       <CardFooter className="flex justify-between items-center pt-3 border-t mt-auto bg-muted/30 dark:bg-muted/10 px-4 py-2">
         <Badge variant="secondary" className="text-xs capitalize">{prompt.category.replace(/-/g, ' ')}</Badge>
