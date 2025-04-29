@@ -10,17 +10,17 @@ End with a launch trajectory for the next orbit.
 ## Blindspot Alchemy
 Channel my subconscious narrator. Name 3 blindspots as if they were hidden NPCs in my inner game.
 Reveal their origin story, sabotage style, and how I might recruit them as allies.
-#blindsport #coach #self
+#blindsport #coach 
 
 ## Loopbreaker: Agency vs Clarity
 Turn the agency-clarity paralysis loop into a glitch I can patch.
 Visualize it like a game loop bug. Show the exploit, and insert 2 rituals (one disruptor, one resetter) like cheat codes.
-#agency #clarity #coach
+#agency #clarity 
 
 ## Timewalker Compass
 Speak as my 60-year-old time-traveling self, whispering across time.
 Share 3 mythic scenes from my future that shaped my legend. Make them vivid, cinematic, and quietly proud.
-#mentor #guide #coach #future
+#mentor #future
 
 ## Archetype Molt
 Guide me through an inner metamorphosis. Name the mask I’m shedding and design a rite of passage: music, memory, mantra, and symbol.
@@ -40,7 +40,7 @@ Write it as a dark fairy tale—and flip it with a healing spell-mantra.
 ## Long-Term Pattern Mapper
 Act as a psycho-cartographer. Map my top 5 blindspots like ancient traps.
 For each, name it, mark its terrain (when/where it appears), and give me a lens shift + a ritual disruptor.
-#coach #cartographer #therapist
+#coach #therapist
 
 ---
 
@@ -65,7 +65,7 @@ Include breathwork, micro-movement, mantra, and inner weather check.
 ## Fitness Forking Path
 Show a Choose-Your-Own-Adventure path: Lifting vs Running.
 Use the voice of my 70-year-old self to compare joy, clarity, and stamina.
-#trainer #weights #running
+#weights #running
 
 ## Tradition vs. Truth
 Put soaked almonds on trial - does it help improve memory?
@@ -75,7 +75,7 @@ Compare ancient wisdom to modern biochemistry. Deliver verdicts with love and lo
 ## Rapid Health Audit
 Use EBM Sort A to lightning-analyze: [Insert Topic].
 Give me 3-point wisdom: strength of evidence, net benefit, and a direct Yes/No.
-#EBM #research #wisdom
+#EBM #research
 
 ---
 
@@ -84,43 +84,43 @@ Give me 3-point wisdom: strength of evidence, net benefit, and a direct Yes/No.
 ## Second Brain Architect
 Help me craft a fluid knowledge system—like a garden that composts, sprouts, and yields.
 Include capture rituals, insight synthesis, and a harvest cycle.
-#thoughtwhisperer
+#knowledge #ritual
 
 ## Project Learning Catalyst
-Design a 4-week build-to-learn quest.
+Design a 4-week build-to-learn quest for [TOPIC]
 Each week: 1 mini-build, 1 tool of power, and 1 artifact to demo.
 Final week = public unveiling.
-#thoughtwhisperer
+#project #quest
 
 ## Depth over Dopamine Plan
 Help me architect an anti-shallow learning routine.
 Daily: 1 deep dive, 1 synthesis ritual, and 1 creation echo. Build anchors to fight distraction drift.
-#thoughtwhisperer
+#learning #depth
 
 ## 10-Min Sparkbook
 Give me a 10-minute daily format with 5 fields: Input, Spark, Question, Synthesis, Action.
 Make it feel like a mind lantern.
-#thoughtwhisperer
+#spark #learning
 
 ## Mentor Avatar
 Simulate my ideal mentor (based on me at 50).
 Share 3 learning paths aligned with my soul + skill trajectory. Include what to stop chasing.
-#thoughtwhisperer
+#mentor #stop
 
 ## Teach Me Anything
 Break down [TOPIC] using these: analogies, visuals, metaphors, questions, and spaced recall.
 End with: “What’s your next question?”
-#thoughtwhisperer
+#teach #topic
 
 ## Skill Ladder Mapper
 Deconstruct [SKILL] into its hidden levels.
 Create a gameboard with milestones, blockers, and boss fights.
-#thoughtwhisperer
+#skill #ladder
 
 ## Promptcraft Academy
 Build me a Prompt Engineering dojo.
 Each lesson = 1 key concept, 1 live demo, and 1 creative challenge. From basics to wild prompts.
-#thoughtwhisperer
+#prompt #dojo
 
 ## Concept Explainer (ELI5)
 Explain the concept of [complex concept, e.g., blockchain, quantum computing] like I'm 5 years old.
