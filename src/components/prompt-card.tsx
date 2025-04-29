@@ -83,17 +83,14 @@ export function PromptCard({ prompt }: PromptCardProps) {
   };
 
   // Extract hashtags from the last line of the prompt details
-  const hashtagsLine = prompt.details.trim().split('\n').pop();
+  const detailsLines = prompt.details.trim().split('\n');
+  const hashtagsLine = detailsLines.pop(); // Get the last line
   const hashtags = hashtagsLine && hashtagsLine.startsWith('#')
     ? hashtagsLine.split('#').slice(1).map(tag => tag.trim())
     : [];
 
   // Extract prompt text excluding hashtags
-  const promptText = prompt.details
-    .split('\n')
-    .slice(0, -1)
-    .join('\n')
-    .trim();
+  const promptText = detailsLines.join('\n').trim();
 
   return (
     <Card className="h-full flex flex-col break-inside-avoid mb-4 shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out bg-card border border-border rounded-lg overflow-hidden group">
