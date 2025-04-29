@@ -127,9 +127,9 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
            </header>
 
            {/* Prompt Grid - Show Skeleton or Grid */}
-           <div className="flex-grow overflow-y-auto"> {/* Allow vertical scroll */}
+           <div className="flex-grow overflow-y-auto p-0 m-0"> {/* Allow vertical scroll */}
              {favoritesLoading && currentFilter === 'favorites' ? (
-               <div className="p-4 sm:p-6 columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-4">
+               <div className="p-4 sm:p-6 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
                  {[...Array(10)].map((_, i) => (
                    <Skeleton key={i} className="h-48 mb-4 rounded-lg break-inside-avoid" />
                  ))}

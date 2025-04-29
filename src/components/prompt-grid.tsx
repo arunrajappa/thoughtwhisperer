@@ -12,7 +12,7 @@ export function PromptGrid({ prompts }: PromptGridProps) {
 
   return (
     <div
-      className="p-4 sm:p-6 columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-4"
+      className="p-4 sm:p-6 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4" // Changed to max 4 columns
       style={{ columnFill: 'balance' }} // Improves masonry layout balance across browsers
     >
       {prompts.map((prompt) => (
