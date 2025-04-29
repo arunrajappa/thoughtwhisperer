@@ -10,46 +10,57 @@ import { useToast } from "@/hooks/use-toast";
 import { useFavorites } from '@/hooks/use-favorites';
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import React, { useMemo } from 'react'; // Import useMemo
+import React, { useMemo } from 'react';
 
 interface PromptCardProps {
   prompt: Prompt;
+  onHashtagClick?: (hashtag: string) => void; // Add new prop for handling hashtag clicks
 }
 
-export function PromptCard({ prompt }: PromptCardProps) {
+export function PromptCard({ prompt, onHashtagClick }: PromptCardProps) {
   const { toast } = useToast();
   const { addFavorite, removeFavorite, isFavorite, isLoading: favoritesLoading } = useFavorites();
   const favorite = isFavorite(prompt.id);
 
   // Memoize the hashtag extraction logic
   const { promptText, hashtags } = useMemo(() => {
-    console.log(`[PromptCard ${prompt.id}] Raw details:`, prompt.details); // Log raw details
-
+    console.log(`[PromptCard ${prompt.id}] Parsing details for hashtags...`);
     const lines = prompt.details?.trim().split('\n') ?? [];
     let hashtagsLine = lines[lines.length - 1] ?? ''; // Get the last line safely
     let extractedHashtags: string[] = [];
     let textContent = prompt.details?.trim() ?? ''; // Default to full details
 
-    console.log(`[PromptCard ${prompt.id}] All lines:`, lines);
-    console.log(`[PromptCard ${prompt.id}] Potential hashtag line:`, hashtagsLine);
+    console.log(`[PromptCard ${prompt.id}] Last line: "${hashtagsLine}"`);
 
-    if (hashtagsLine.trim().startsWith('#')) {
-      // Check if the *trimmed* last line starts with #
-      extractedHashtags = hashtagsLine
-        .split('#') // Split by #
-        .map(tag => tag.trim()) // Trim each part
-        .filter(tag => tag.length > 0); // Filter out empty strings resulting from split
+    // Improved check: trim and ensure it starts with # and contains space or is just #tag
+    const trimmedLastLine = hashtagsLine.trim();
+    if (trimmedLastLine.startsWith('#') && (trimmedLastLine.includes(' ') || !trimmedLastLine.substring(1).includes('#'))) {
+        // It looks like a hashtag line
+        extractedHashtags = trimmedLastLine
+            .split('#') // Split by #
+            .map(tag => tag.trim()) // Trim whitespace around each potential tag
+            .filter(tag => tag.length > 0 && !tag.includes(' ')); // Filter out empty strings and tags with spaces
 
-      // Remove the hashtag line from the displayed text
-      textContent = lines.slice(0, -1).join('\n').trim();
+        // If we found valid hashtags, remove the last line from the content
+        if (extractedHashtags.length > 0) {
+            textContent = lines.slice(0, -1).join('\n').trim();
+            console.log(`[PromptCard ${prompt.id}] Extracted hashtags:`, extractedHashtags);
+        } else {
+            // Reset if split resulted in nothing valid (e.g., line was just "#")
+            extractedHashtags = [];
+             console.log(`[PromptCard ${prompt.id}] Last line started with # but parsing yielded no valid hashtags.`);
+        }
 
-      console.log(`[PromptCard ${prompt.id}] Hashtags found and extracted:`, extractedHashtags);
     } else {
-      console.log(`[PromptCard ${prompt.id}] No hashtag line found.`);
+      console.log(`[PromptCard ${prompt.id}] Last line does not appear to be a hashtag line.`);
     }
+
+    console.log(`[PromptCard ${prompt.id}] Final prompt text length: ${textContent.length}`);
+    console.log(`[PromptCard ${prompt.id}] Final hashtags:`, extractedHashtags);
 
     return { promptText: textContent, hashtags: extractedHashtags };
   }, [prompt.details, prompt.id]); // Depend on prompt.details and prompt.id
+
 
   const handleCopy = async () => {
     try {
@@ -115,6 +126,12 @@ export function PromptCard({ prompt }: PromptCardProps) {
     }
   };
 
+  const handleBadgeClick = (tag: string) => {
+    if (onHashtagClick) {
+      onHashtagClick(`#${tag}`); // Pass the hashtag with '#' prefix
+    }
+  };
+
 
   return (
     <Card className="h-full flex flex-col break-inside-avoid mb-4 shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out bg-card border border-border rounded-lg overflow-hidden group">
@@ -125,10 +142,22 @@ export function PromptCard({ prompt }: PromptCardProps) {
          {/* Display prompt text excluding hashtags */}
          {promptText}
       </CardContent>
-      <CardFooter className="flex flex-wrap justify-between items-center pt-3 border-t mt-auto bg-muted/30 dark:bg-muted/10 px-4 py-2">
+      <CardFooter className="flex flex-wrap justify-between items-center pt-3 border-t mt-auto bg-muted/30 dark:bg-card/50 px-4 py-2">
         <div className="flex items-center space-x-1 flex-wrap gap-y-1"> {/* Added flex-wrap and gap-y */}
             {hashtags.map((tag, index) => (
-                <Badge key={index} variant="secondary" className="text-xs capitalize flex items-center">
+                <Badge
+                    key={index}
+                    variant="secondary"
+                    className={cn(
+                        "text-xs capitalize flex items-center",
+                         onHashtagClick && "cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+                    )}
+                    onClick={() => handleBadgeClick(tag)}
+                    title={`Filter by #${tag}`} // Add tooltip for clarity
+                    role={onHashtagClick ? "button" : undefined} // Add role if clickable
+                    tabIndex={onHashtagClick ? 0 : undefined} // Make it focusable if clickable
+                    onKeyDown={onHashtagClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') handleBadgeClick(tag); } : undefined}
+                >
                   <Hash className="h-3 w-3 mr-1" />
                   {tag}
                 </Badge>

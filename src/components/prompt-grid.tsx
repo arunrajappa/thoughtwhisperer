@@ -3,9 +3,10 @@ import { PromptCard } from './prompt-card';
 
 interface PromptGridProps {
   prompts: Prompt[];
+  onHashtagClick?: (hashtag: string) => void; // Add prop to accept handler
 }
 
-export function PromptGrid({ prompts }: PromptGridProps) {
+export function PromptGrid({ prompts, onHashtagClick }: PromptGridProps) {
   if (!prompts || prompts.length === 0) {
     return <p className="text-center text-muted-foreground mt-8 p-4">No prompts found matching your criteria.</p>;
   }
@@ -16,7 +17,11 @@ export function PromptGrid({ prompts }: PromptGridProps) {
       style={{ columnFill: 'balance' }} // Improves masonry layout balance across browsers
     >
       {prompts.map((prompt) => (
-        <PromptCard key={prompt.id} prompt={prompt} />
+        <PromptCard
+          key={prompt.id}
+          prompt={prompt}
+          onHashtagClick={onHashtagClick} // Pass handler down
+        />
       ))}
     </div>
   );

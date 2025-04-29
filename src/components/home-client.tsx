@@ -56,11 +56,30 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
     // Apply search term filtering *after* category/favorites filtering
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      result = result.filter(prompt =>
-        prompt.title.toLowerCase().includes(lowerCaseSearchTerm) ||
-        prompt.details.toLowerCase().includes(lowerCaseSearchTerm) ||
-        prompt.category.toLowerCase().includes(lowerCaseSearchTerm)
-      );
+      // Check if search term starts with # for hashtag specific search
+      if (lowerCaseSearchTerm.startsWith('#')) {
+        const searchTag = lowerCaseSearchTerm.substring(1); // Get tag without #
+        result = result.filter(prompt => {
+          // Extract hashtags from the prompt details (similar logic to PromptCard)
+          const lines = prompt.details?.trim().split('\n') ?? [];
+          const lastLine = lines[lines.length - 1]?.trim() ?? '';
+          if (lastLine.startsWith('#')) {
+            const promptHashtags = lastLine
+              .split('#')
+              .map(tag => tag.trim())
+              .filter(tag => tag.length > 0 && !tag.includes(' '));
+            return promptHashtags.some(tag => tag.toLowerCase() === searchTag);
+          }
+          return false; // No hashtags found in this prompt
+        });
+      } else {
+        // Normal search (title, details, category)
+        result = result.filter(prompt =>
+          prompt.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+          prompt.details.toLowerCase().includes(lowerCaseSearchTerm) ||
+          prompt.category.toLowerCase().includes(lowerCaseSearchTerm)
+        );
+      }
     }
 
     return result;
@@ -69,9 +88,16 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
 
   const handleFilterChange = (filter: string | null) => {
     setCurrentFilter(filter);
+    setSearchTerm(''); // Clear search term when changing category/favorites filter
     if (isMobile && sidebarOpen) {
        toggleSidebar();
     }
+  };
+
+  // New handler for clicking hashtag badges
+  const handleHashtagClick = (hashtag: string) => {
+    setCurrentFilter(null); // Clear category filter
+    setSearchTerm(hashtag); // Set search term to the clicked hashtag
   };
 
   const toggleTheme = () => {
@@ -92,7 +118,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
       <SidebarInset>
          <main className="flex flex-col flex-1 h-full overflow-x-hidden">
            {/* Header with Search & Theme Toggle */}
-           <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 sm:px-6 flex-shrink-0 shadow-sm">
+           <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 sm:px-6 flex-shrink-0 shadow-sm">
              <Button
                size="icon"
                variant="ghost"
@@ -115,7 +141,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                  <Input
                    type="search"
-                   placeholder="Search prompts..."
+                   placeholder="Search or filter #hashtag..." // Updated placeholder
                    value={searchTerm}
                    onChange={(e) => setSearchTerm(e.target.value)}
                    className="w-full appearance-none bg-muted rounded-full pl-10 pr-4 py-2 shadow-inner focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 md:w-full"
@@ -140,7 +166,10 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
                </div>
              ) : (
                 // Show the grid otherwise (either not loading, or not on favorites filter, or favorites loaded)
-               <PromptGrid prompts={filteredPrompts} />
+               <PromptGrid
+                  prompts={filteredPrompts}
+                  onHashtagClick={handleHashtagClick} // Pass the handler
+                />
              )}
            </div>
          </main>
