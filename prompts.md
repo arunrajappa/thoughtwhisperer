@@ -1,36 +1,36 @@
-# Personal Coach & Transformation
+# Coach 
 
 ## Life Systems Overhaul
 You are my systems alchemist. Deconstruct my life as if optimizing a spacecraft.
 Identify 3 propulsion systems (strengths) and 3 gravity wells (drags).
 Suggest one system hack or quantum boost for each drag.
 End with a launch trajectory for the next orbit.
-#thoughtwhisperer
+#coach #transformation
 
 ## Blindspot Alchemy
 Channel my subconscious narrator. Name 3 blindspots as if they were hidden NPCs in my inner game.
 Reveal their origin story, sabotage style, and how I might recruit them as allies.
-#thoughtwhisperer
+#blindsport #coach #self
 
 ## Loopbreaker: Agency vs Clarity
 Turn the agency-clarity paralysis loop into a glitch I can patch.
 Visualize it like a game loop bug. Show the exploit, and insert 2 rituals (one disruptor, one resetter) like cheat codes.
-#thoughtwhisperer
+#agency #clarity #coach
 
 ## Timewalker Compass
 Speak as my 60-year-old time-traveling self, whispering across time.
 Share 3 mythic scenes from my future that shaped my legend. Make them vivid, cinematic, and quietly proud.
-#thoughtwhisperer
+#mentor #guide #coach #future
 
 ## Archetype Molt
 Guide me through an inner metamorphosis. Name the mask I’m shedding and design a rite of passage: music, memory, mantra, and symbol.
 Leave me a talisman for the next chapter.
-#thoughtwhisperer
+#talisman #coach
 
 ## Radical Candor Ritual
 Be my inner shadow. Name 3 painful truths I’m sidestepping.
 For each, offer a sacred dare—one bold act to reclaim my path. No sugar, only steel.
-#thoughtwhisperer
+#coach #steel
 
 ## Subconscious Leak Detector
 Become my mind’s silent observer. Surface one deeply-rooted belief that distorts my lens.
@@ -44,7 +44,7 @@ For each, name it, mark its terrain (when/where it appears), and give me a lens 
 
 ---
 
-# Personal Health & Wellness
+# Wellness
 
 ## Health Truth Scan
 Use evidence-based sorcery to evaluate [Insert Health Practice].
@@ -79,7 +79,7 @@ Give me 3-point wisdom: strength of evidence, net benefit, and a direct Yes/No.
 
 ---
 
-# Learning & Knowledge Growth
+# Teacher 
 
 ## Second Brain Architect
 Help me craft a fluid knowledge system—like a garden that composts, sprouts, and yields.
@@ -122,9 +122,18 @@ Build me a Prompt Engineering dojo.
 Each lesson = 1 key concept, 1 live demo, and 1 creative challenge. From basics to wild prompts.
 #thoughtwhisperer
 
+## Concept Explainer (ELI5)
+Explain the concept of [complex concept, e.g., blockchain, quantum computing] like I'm 5 years old.
+
+## Research Starting Points
+Provide 3 reliable starting points (websites, key authors, specific studies) for researching [research topic].
+
+## Study Plan Outline
+Outline a basic study plan for learning [skill/subject] over the next 4 weeks, dedicating approximately [X] hours per week.
+
 ---
 
-# New Product Ideas & Ventures
+# Venture Capitalist
 
 ## Innovation Oracle
 Summon 3 startup ideas where AI meets human transformation.
@@ -163,7 +172,7 @@ Surface conflicts, synthesis, and “what they all missed.”
 
 ---
 
-# Marketing & Sales
+# Marketing Guru
 
 ## Brand Pillar Architect
 Map my brand into 3 energy centers: Thought, Craft, Career.
@@ -206,7 +215,7 @@ Interview me, then write my Brand Voice Codex: tone, taboos, values, language te
 
 ---
 
-# Meta-Thinking & Execution
+# Meta-Thinker
 
 ## Weekly Mind Mirror
 Reflect on my week as a strategist-monk.
@@ -230,7 +239,7 @@ Build an Asana-style launch ritual for [PROJECT].
 
 ---
 
-# Content Creation
+# Content Creator
 
 ## Blog Post Idea Generator
 Generate 5 blog post ideas about [topic].
@@ -244,7 +253,7 @@ Write a compelling 15-second hook for a YouTube video about [video topic].
 
 ---
 
-# Productivity
+# Productivity Hacker
 
 ## Meeting Agenda Creator
 Create a concise meeting agenda for a 30-minute sync-up about [project name].
@@ -263,20 +272,8 @@ Suggest a possible order.
 
 ---
 
-# Learning & Research
 
-## Concept Explainer (ELI5)
-Explain the concept of [complex concept, e.g., blockchain, quantum computing] like I'm 5 years old.
-
-## Research Starting Points
-Provide 3 reliable starting points (websites, key authors, specific studies) for researching [research topic].
-
-## Study Plan Outline
-Outline a basic study plan for learning [skill/subject] over the next 4 weeks, dedicating approximately [X] hours per week.
-
----
-
-# Creative Writing
+# Creative Writer
 
 ## Character Backstory Snippet
 Write a short paragraph describing a defining childhood memory for a character who is [character trait, e.g., overly cautious, recklessly brave].

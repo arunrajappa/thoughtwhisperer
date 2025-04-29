@@ -5,11 +5,12 @@ import type { Prompt } from '@/lib/prompts';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, Share2, Copy } from 'lucide-react';
+import { Star, Share2, Copy, Hash } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useFavorites } from '@/hooks/use-favorites';
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import React from 'react';
 
 interface PromptCardProps {
   prompt: Prompt;
@@ -81,6 +82,19 @@ export function PromptCard({ prompt }: PromptCardProps) {
     }
   };
 
+  // Extract hashtags from the last line of the prompt details
+  const hashtagsLine = prompt.details.trim().split('\n').pop();
+  const hashtags = hashtagsLine && hashtagsLine.startsWith('#')
+    ? hashtagsLine.split('#').slice(1).map(tag => tag.trim())
+    : [];
+
+  // Extract prompt text excluding hashtags
+  const promptText = prompt.details
+    .split('\n')
+    .slice(0, -1)
+    .join('\n')
+    .trim();
+
   return (
     <Card className="h-full flex flex-col break-inside-avoid mb-4 shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out bg-card border border-border rounded-lg overflow-hidden group">
       <CardHeader className="pb-3">
@@ -88,10 +102,17 @@ export function PromptCard({ prompt }: PromptCardProps) {
       </CardHeader>
       <CardContent className="flex-grow text-sm text-muted-foreground whitespace-pre-wrap pb-4">
          {/* Display raw details, relying on whitespace-pre-wrap for formatting */}
-         {prompt.details}
+         {promptText}
       </CardContent>
-      <CardFooter className="flex justify-between items-center pt-3 border-t mt-auto bg-muted/30 dark:bg-muted/10 px-4 py-2">
-        <Badge variant="secondary" className="text-xs capitalize">{prompt.category.replace(/-/g, ' ')}</Badge>
+      <CardFooter className="flex flex-wrap justify-between items-center pt-3 border-t mt-auto bg-muted/30 dark:bg-muted/10 px-4 py-2">
+        <div className="flex items-center space-x-1">
+            {hashtags.map((tag, index) => (
+                <Badge key={index} variant="secondary" className="text-xs capitalize flex items-center">
+                  <Hash className="h-3 w-3 mr-1" />
+                  {tag}
+                </Badge>
+            ))}
+          </div>
         <div className="flex space-x-0.5">
            {favoritesLoading ? (
               <Skeleton className="h-8 w-8 rounded-full" /> // Skeleton for favorite button
