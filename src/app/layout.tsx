@@ -24,7 +24,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
-      {/* Removed head section with Google Font links */}
       <body
        className={cn(
           "min-h-screen bg-background font-sans antialiased flex flex-col overflow-x-hidden", // Added overflow-x-hidden
@@ -41,7 +40,15 @@ export default function RootLayout({
             {children}
           </div>
           <footer className="py-4 px-6 text-center text-sm text-muted-foreground border-t">
-            Built for StreamAlive by @appa using Firebase Studio
+            Built by{' '}
+            <a
+              href="https://x.com/appa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-accent hover:underline transition-colors"
+            >
+              @appa
+            </a>
           </footer>
           <Toaster />
         </ThemeProvider>

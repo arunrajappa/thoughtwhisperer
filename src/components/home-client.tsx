@@ -16,6 +16,7 @@ import { useTheme } from "next-themes";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { AddPromptDialog } from './add-prompt-dialog'; // Import AddPromptDialog
+import { AboutDialog } from './about-dialog'; // Import AboutDialog
 
 interface HomeClientProps {
   initialPrompts: Prompt[];
@@ -26,6 +27,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
   const [searchTerm, setSearchTerm] = useState('');
   const [currentFilter, setCurrentFilter] = useState<string | null>(null); // Filter can be category, 'favorites', or 'my-prompts'
   const [isAddPromptDialogOpen, setIsAddPromptDialogOpen] = useState(false);
+  const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false); // State for About dialog
   const {
     favorites,
     addFavorite,
@@ -33,7 +35,6 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
     isFavorite,
     isLoading: favoritesLoading,
   } = useFavorites();
-  // Get user prompts logic
   const {
       userPrompts,
       addUserPrompt,
@@ -51,10 +52,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
 
   // Combine initial prompts and user prompts
   const allPrompts = useMemo(() => {
-     // Prepend user prompts to initial prompts
-     // Filter out any potential duplicates based on ID if necessary, though IDs should be unique
      const combined = [...userPrompts, ...initialPrompts];
-     // console.log("Combined prompts:", combined.length, "User:", userPrompts.length, "Initial:", initialPrompts.length);
      return combined;
   }, [initialPrompts, userPrompts]);
 
@@ -63,11 +61,8 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
 
     // Filter by category, favorites, or my prompts
     if (currentFilter === 'favorites') {
-       if (!favoritesLoading && favorites.length > 0) {
-         result = result.filter(prompt => favorites.includes(prompt.id));
-       } else {
-         result = []; // Show nothing if loading or no favorites
-       }
+       result = result.filter(prompt => isFavorite(prompt.id));
+       // Handle loading state separately in the grid
     } else if (currentFilter === 'my-prompts') {
        if (!userPromptsLoading) {
          result = userPrompts; // Show only user prompts
@@ -105,14 +100,11 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
         );
       }
     }
-
-    // console.log(`Filtering: currentFilter=${currentFilter}, searchTerm=${searchTerm}, result count=${result.length}`);
     return result;
-  }, [allPrompts, searchTerm, currentFilter, favorites, favoritesLoading, userPrompts, userPromptsLoading]); // Add userPrompts and loading state
+  }, [allPrompts, searchTerm, currentFilter, isFavorite, favoritesLoading, userPrompts, userPromptsLoading]);
 
 
   const handleFilterChange = (filter: string | null) => {
-    console.log("Changing filter to:", filter); // Debug log
     setCurrentFilter(filter);
     setSearchTerm('');
     if (isMobile && sidebarOpen) {
@@ -121,7 +113,6 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
   };
 
   const handleHashtagClick = (hashtag: string) => {
-    console.log("Hashtag clicked:", hashtag); // Debug log
     setCurrentFilter(null); // Clear primary filter when clicking hashtag
     setSearchTerm(hashtag);
   };
@@ -130,9 +121,8 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-  // Loading state for the grid
+  // Loading state specifically for when filtering by favorites or user prompts
   const isGridLoading = (favoritesLoading && currentFilter === 'favorites') || (userPromptsLoading && currentFilter === 'my-prompts');
-
 
   // Get unique categories from both initial and user prompts
   const allCategories = useMemo(() => {
@@ -152,6 +142,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
           onFilterChange={handleFilterChange}
           favoritesLoading={favoritesLoading}
           userPromptsLoading={userPromptsLoading} // Pass user prompts loading state
+          onAboutClick={() => setIsAboutDialogOpen(true)} // Pass handler to open About dialog
         />
       </Sidebar>
       <SidebarInset>
@@ -229,7 +220,7 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
                   addFavorite={addFavorite}
                   removeFavorite={removeFavorite}
                   isFavorite={isFavorite}
-                  favoritesLoading={favoritesLoading} // Pass the specific loading state
+                  favoritesLoading={favoritesLoading} // Pass the specific loading state for favorites
                 />
              )}
            </div>
@@ -242,6 +233,12 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
          onOpenChange={setIsAddPromptDialogOpen}
          categories={allCategories} // Pass combined categories
          onAddPrompt={addUserPrompt} // Pass the handler from the hook
+       />
+
+      {/* About Dialog */}
+       <AboutDialog
+         open={isAboutDialogOpen}
+         onOpenChange={setIsAboutDialogOpen}
        />
     </>
   );

@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from "@/components/ui/sidebar";
-import { Tag, Star, Home, Settings, Feather, UserCircle } from 'lucide-react'; // Added UserCircle
+import { Tag, Star, Home, Settings, Feather, UserCircle, Info, Github, Twitter } from 'lucide-react'; // Added Info, Github, Twitter
 import { cn } from '@/lib/utils';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from './ui/button';
@@ -14,6 +14,7 @@ interface SidebarContentProps {
   onFilterChange: (filter: string | null) => void;
   favoritesLoading: boolean;
   userPromptsLoading: boolean; // Add loading state for user prompts
+  onAboutClick: () => void; // Add handler for clicking the About button
 }
 
 export function AppSidebarContent({
@@ -21,7 +22,8 @@ export function AppSidebarContent({
   currentFilter,
   onFilterChange,
   favoritesLoading,
-  userPromptsLoading // Receive loading state
+  userPromptsLoading, // Receive loading state
+  onAboutClick, // Receive About handler
 }: SidebarContentProps) {
   const isFavoritesActive = currentFilter === 'favorites';
   const isMyPromptsActive = currentFilter === 'my-prompts'; // Check if My Prompts is active
@@ -36,7 +38,8 @@ export function AppSidebarContent({
         </div>
         <p className="text-xs text-muted-foreground mt-1">Your companion for prompting.</p>
       </SidebarHeader>
-      <SidebarContent className="flex-grow p-2">
+      <SidebarContent className="flex-grow p-2 overflow-y-auto"> {/* Added overflow-y-auto */}
+        {/* Main Filters */}
         <SidebarMenu>
           {/* All Prompts */}
           <SidebarMenuItem>
@@ -106,14 +109,12 @@ export function AppSidebarContent({
 
         <hr className="my-3 border-sidebar-border" />
 
+        {/* Categories */}
         <SidebarMenu>
           <SidebarMenuItem className="px-2 mb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Categories
           </SidebarMenuItem>
           {categories.map((category) => {
-            // Skip rendering 'Uncategorized' if you prefer not to show it explicitly
-            // if (category === 'Uncategorized') return null;
-
             const isActive = currentFilter === category;
             const categoryLabel = category.replace(/-/g, ' ');
             return (
@@ -136,6 +137,22 @@ export function AppSidebarContent({
           })}
         </SidebarMenu>
       </SidebarContent>
+
+      {/* Footer Section */}
+      <SidebarFooter className="mt-auto p-2 border-t border-sidebar-border">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={onAboutClick} // Use the passed handler
+              className="w-full justify-start transition-colors duration-150 hover:bg-accent/10"
+              tooltip="About Thought Whisperer"
+            >
+              <Info className="h-4 w-4 mr-2 flex-shrink-0" />
+              <span className="truncate">About</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </>
   );
 }
