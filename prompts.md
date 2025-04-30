@@ -139,7 +139,7 @@ Outline a basic study plan for learning [skill/subject] over the next 4 weeks, d
 ## Innovation Oracle
 Summon 3 startup ideas where AI meets human transformation.
 Show the sharp insight, first tribe, and the path to MVP magic.
-#vc #product
+#startup #product
 
 ## Launch Sprint Blueprint
 Create a 30-day sprint map from zero to live product.

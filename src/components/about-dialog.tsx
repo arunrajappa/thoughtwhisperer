@@ -31,7 +31,7 @@ export function AboutDialog({ open, onOpenChange }: AboutDialogProps) {
              <Feather className="h-6 w-6 text-accent" />
              <DialogTitle className="text-xl font-semibold">Thought Whisperer</DialogTitle>
           </div>
-          <DialogDescription className="text-sm text-muted-foreground">
+          <DialogDescription className="text-sm text-muted-foreground text-center center items-center">
              Your companion for prompting.
           </DialogDescription>
         </DialogHeader>
@@ -71,7 +71,7 @@ export function AboutDialog({ open, onOpenChange }: AboutDialogProps) {
            </div>
 
            <p className="text-xs text-muted-foreground pt-2">
-             Built for my friends at StreamAlive in April {currentYear}. {/* Updated year */}
+             Built for my friends at StreamAlive in April {currentYear}. #UnmuteTheAudience {/* Updated year */}
            </p>
         </div>
 
