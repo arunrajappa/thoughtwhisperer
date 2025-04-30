@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, Share2, Copy, Hash } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { useFavorites } from '@/hooks/use-favorites';
+// Removed useFavorites import
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import React, { useMemo } from 'react';
@@ -15,12 +15,21 @@ import React, { useMemo } from 'react';
 interface PromptCardProps {
   prompt: Prompt;
   onHashtagClick?: (hashtag: string) => void; // Add new prop for handling hashtag clicks
+  // Props passed down from parent (PromptGrid)
+  isFavorite: boolean;
+  onFavoriteToggle: () => void;
+  favoritesLoading: boolean;
 }
 
-export function PromptCard({ prompt, onHashtagClick }: PromptCardProps) {
+export function PromptCard({
+  prompt,
+  onHashtagClick,
+  isFavorite,
+  onFavoriteToggle,
+  favoritesLoading
+}: PromptCardProps) {
   const { toast } = useToast();
-  const { addFavorite, removeFavorite, isFavorite, isLoading: favoritesLoading } = useFavorites();
-  const favorite = isFavorite(prompt.id);
+  // isFavorite and favoritesLoading are now props
 
   // Memoize the hashtag extraction logic
   const { promptText, hashtags } = useMemo(() => {
@@ -110,20 +119,14 @@ export function PromptCard({ prompt, onHashtagClick }: PromptCardProps) {
     }
   };
 
+  // Simplified favorite toggle using the passed prop
   const handleFavoriteToggle = () => {
     if (favoritesLoading) return;
-
-    if (favorite) {
-      removeFavorite(prompt.id);
-      toast({
-        title: "Removed from favorites",
-      });
-    } else {
-      addFavorite(prompt.id);
-       toast({
-        title: "Added to favorites",
-      });
-    }
+    onFavoriteToggle(); // Call the function passed from the parent
+    // Optional: Keep the toast messages if desired
+    toast({
+      title: isFavorite ? "Removed from favorites" : "Added to favorites",
+    });
   };
 
   const handleBadgeClick = (tag: string) => {
@@ -170,14 +173,14 @@ export function PromptCard({ prompt, onHashtagClick }: PromptCardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={handleFavoriteToggle}
-                aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
+                onClick={handleFavoriteToggle} // Use the updated handler
+                aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
                 disabled={favoritesLoading}
                 className="h-8 w-8 rounded-full hover:bg-accent/10"
-                aria-pressed={favorite}
-                title={favorite ? 'Remove from favorites' : 'Add to favorites'}
+                aria-pressed={isFavorite} // Use the prop
+                title={isFavorite ? 'Remove from favorites' : 'Add to favorites'} // Use the prop
               >
-               <Star className={cn("h-4 w-4 transition-colors duration-200", favorite ? "fill-yellow-400 text-yellow-500" : "text-muted-foreground group-hover:text-accent")} />
+               <Star className={cn("h-4 w-4 transition-colors duration-200", isFavorite ? "fill-yellow-400 text-yellow-500" : "text-muted-foreground group-hover:text-accent")} />
               </Button>
            )}
            <Button

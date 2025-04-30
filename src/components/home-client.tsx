@@ -23,7 +23,14 @@ interface HomeClientProps {
 export function HomeClient({ initialPrompts, initialCategories }: HomeClientProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
-  const { favorites, isLoading: favoritesLoading } = useFavorites();
+  // Get all favorite logic and state here
+  const {
+    favorites,
+    addFavorite,
+    removeFavorite,
+    isFavorite,
+    isLoading: favoritesLoading
+  } = useFavorites();
   const { toggleSidebar, open: sidebarOpen } = useSidebar();
   const { theme, setTheme } = useTheme();
   const isMobile = useIsMobile();
@@ -38,15 +45,17 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
   const categories = initialCategories;
 
   const filteredPrompts = useMemo(() => {
-    let result = prompts;
+    // Use a temporary variable to avoid modifying initialPrompts directly if needed elsewhere
+    let result = [...initialPrompts]; // Create a shallow copy to filter
 
     // Filter by category or favorites
     if (currentFilter === 'favorites') {
        // Ensure favorites array is not empty and not loading before filtering
        if (!favoritesLoading && favorites.length > 0) {
          result = result.filter(prompt => favorites.includes(prompt.id));
-       } else if (favoritesLoading || favorites.length === 0) {
+       } else {
          // If loading or no favorites, show no prompts under the 'favorites' filter
+         // Clear the result array
          result = [];
        }
     } else if (currentFilter) {
@@ -83,7 +92,8 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
     }
 
     return result;
-  }, [prompts, searchTerm, currentFilter, favorites, favoritesLoading]); // Add favoritesLoading dependency
+     // Ensure initialPrompts is included if it can change, otherwise remove it
+  }, [initialPrompts, searchTerm, currentFilter, favorites, favoritesLoading]);
 
 
   const handleFilterChange = (filter: string | null) => {
@@ -168,7 +178,13 @@ export function HomeClient({ initialPrompts, initialCategories }: HomeClientProp
                 // Show the grid otherwise (either not loading, or not on favorites filter, or favorites loaded)
                <PromptGrid
                   prompts={filteredPrompts}
-                  onHashtagClick={handleHashtagClick} // Pass the handler
+                  onHashtagClick={handleHashtagClick} // Pass the hashtag handler
+                  // Pass favorite state and handlers down
+                  favorites={favorites}
+                  addFavorite={addFavorite}
+                  removeFavorite={removeFavorite}
+                  isFavorite={isFavorite}
+                  favoritesLoading={favoritesLoading}
                 />
              )}
            </div>
