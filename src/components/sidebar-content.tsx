@@ -3,33 +3,42 @@
 
 import React from 'react';
 import { SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from "@/components/ui/sidebar";
-import { Tag, Star, Home, Settings, Feather } from 'lucide-react'; // Added Feather and Settings
+import { Tag, Star, Home, Settings, Feather, UserCircle } from 'lucide-react'; // Added UserCircle
 import { cn } from '@/lib/utils';
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from './ui/button'; // Import Button for potential settings link/modal later
+import { Button } from './ui/button';
 
 interface SidebarContentProps {
   categories: string[];
-  currentFilter: string | null;
+  currentFilter: string | null; // Can be category, 'favorites', 'my-prompts'
   onFilterChange: (filter: string | null) => void;
   favoritesLoading: boolean;
+  userPromptsLoading: boolean; // Add loading state for user prompts
 }
 
-export function AppSidebarContent({ categories, currentFilter, onFilterChange, favoritesLoading }: SidebarContentProps) {
+export function AppSidebarContent({
+  categories,
+  currentFilter,
+  onFilterChange,
+  favoritesLoading,
+  userPromptsLoading // Receive loading state
+}: SidebarContentProps) {
   const isFavoritesActive = currentFilter === 'favorites';
+  const isMyPromptsActive = currentFilter === 'my-prompts'; // Check if My Prompts is active
   const isAllActive = currentFilter === null;
 
   return (
     <>
       <SidebarHeader className="p-4 border-b border-sidebar-border">
         <div className="flex items-center gap-2">
-          <Feather className="h-6 w-6 text-accent" /> {/* Whisper icon */}
+          <Feather className="h-6 w-6 text-accent" />
           <h2 className="text-xl font-semibold text-foreground">Thought Whisperer</h2>
         </div>
         <p className="text-xs text-muted-foreground mt-1">Your companion for prompting.</p>
       </SidebarHeader>
-      <SidebarContent className="flex-grow p-2"> {/* Use flex-grow and padding */}
+      <SidebarContent className="flex-grow p-2">
         <SidebarMenu>
+          {/* All Prompts */}
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={() => onFilterChange(null)}
@@ -45,9 +54,11 @@ export function AppSidebarContent({ categories, currentFilter, onFilterChange, f
               <span className="truncate">All Prompts</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
+          {/* Favorites */}
           {favoritesLoading ? (
             <SidebarMenuItem className="px-2">
-              <Skeleton className="h-8 w-full rounded-md" /> {/* Skeleton for Favorites */}
+              <Skeleton className="h-8 w-full rounded-md" />
             </SidebarMenuItem>
           ) : (
             <SidebarMenuItem>
@@ -67,6 +78,30 @@ export function AppSidebarContent({ categories, currentFilter, onFilterChange, f
               </SidebarMenuButton>
             </SidebarMenuItem>
           )}
+
+           {/* My Prompts */}
+          {userPromptsLoading ? (
+             <SidebarMenuItem className="px-2">
+               <Skeleton className="h-8 w-full rounded-md" />
+             </SidebarMenuItem>
+           ) : (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => onFilterChange('my-prompts')}
+                isActive={isMyPromptsActive}
+                className={cn(
+                  "w-full justify-start transition-colors duration-150 hover:bg-accent/10",
+                  isMyPromptsActive && "bg-accent text-accent-foreground hover:bg-accent/90"
+                )}
+                aria-current={isMyPromptsActive ? 'page' : undefined}
+                disabled={userPromptsLoading} // Disable while loading user prompts
+                tooltip="View prompts you created"
+              >
+                <UserCircle className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="truncate">My Prompts</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+           )}
         </SidebarMenu>
 
         <hr className="my-3 border-sidebar-border" />
@@ -76,15 +111,18 @@ export function AppSidebarContent({ categories, currentFilter, onFilterChange, f
             Categories
           </SidebarMenuItem>
           {categories.map((category) => {
+            // Skip rendering 'Uncategorized' if you prefer not to show it explicitly
+            // if (category === 'Uncategorized') return null;
+
             const isActive = currentFilter === category;
-            const categoryLabel = category.replace(/-/g, ' '); // Replace hyphens for display
+            const categoryLabel = category.replace(/-/g, ' ');
             return (
               <SidebarMenuItem key={category}>
                 <SidebarMenuButton
                   onClick={() => onFilterChange(category)}
                   isActive={isActive}
                   className={cn(
-                    "w-full justify-start transition-colors duration-150 hover:bg-accent/10 capitalize", // Added capitalize
+                    "w-full justify-start transition-colors duration-150 hover:bg-accent/10 capitalize",
                     isActive && "bg-accent text-accent-foreground hover:bg-accent/90"
                   )}
                    aria-current={isActive ? 'page' : undefined}
@@ -98,13 +136,6 @@ export function AppSidebarContent({ categories, currentFilter, onFilterChange, f
           })}
         </SidebarMenu>
       </SidebarContent>
-       {/* Optional Footer - Could add settings or theme toggle here too */}
-      {/* <SidebarFooter className="p-2 border-t border-sidebar-border mt-auto">
-         <Button variant="ghost" className="w-full justify-start">
-           <Settings className="h-4 w-4 mr-2" />
-           Settings
-         </Button>
-       </SidebarFooter> */}
     </>
   );
 }
