@@ -1,4 +1,4 @@
-# Coach 
+# Coach Ella
 
 ## Life Systems Overhaul
 You are my systems alchemist. Deconstruct my life as if optimizing a spacecraft.
@@ -43,7 +43,7 @@ For each, name it, mark its terrain (when/where it appears), and give me a lens 
 #coach #therapist
 
 
-# Wellness
+# Wellness Wonka
 
 ## Health Truth Scan
 Use evidence-based sorcery to evaluate [Insert Health Practice].
@@ -78,7 +78,7 @@ Give me 3-point wisdom: strength of evidence, net benefit, and a direct Yes/No.
 
 
 
-# Teacher 
+# Teacher Tuffluv
 
 ## Second Brain Architect
 Help me craft a fluid knowledge system—like a garden that composts, sprouts, and yields.
@@ -134,7 +134,7 @@ Outline a basic study plan for learning [skill/subject] over the next 4 weeks, d
 #study #plan
 
 
-# Venture Capitalist
+# Venture Vulture
 
 ## Innovation Oracle
 Summon 3 startup ideas where AI meets human transformation.
@@ -171,9 +171,7 @@ Host a mind-summit of 3 imagined experts to solve [PROBLEM].
 Surface conflicts, synthesis, and “what they all missed.”
 #expert #query
 
-
-
-# Marketing Guru
+# Marketing Maven
 
 ## Brand Pillar Architect
 Map my brand into 3 energy centers: Thought, Craft, Career.
@@ -214,7 +212,7 @@ Keep soul signal constant.
 Interview me, then write my Brand Voice Codex: tone, taboos, values, language textures, and edge triggers.
 #brand #voice
 
-# Meta-Thinker
+# Meta-Thinking Master
 
 ## Weekly Mind Mirror
 Reflect on my week as a strategist-monk.
@@ -236,9 +234,7 @@ Build an Asana-style launch ritual for [PROJECT].
 3 sacred docs: vision.md, flow.md (timeline), and taskmap.md (owners + energy).
 #launch #ritual
 
-
-
-# Content Creator
+# Kontent Kid
 
 ## Blog Post Idea Generator
 Generate 5 blog post ideas about [topic].
@@ -254,7 +250,7 @@ Write a compelling 15-second hook for a YouTube video about [video topic].
 #script #hook
 
 
-# Productivity Hacker
+# Productivity Papa
 
 ## Meeting Agenda Creator
 Create a concise meeting agenda for a 30-minute sync-up about [project name].
@@ -274,7 +270,7 @@ Help me prioritize these tasks based on urgency and importance:
 Suggest a possible order.
 #prioritize #tasks
 
-# Creative Writer
+# Wordsmith Weaver
 
 ## Character Backstory Snippet
 Write a short paragraph describing a defining childhood memory for a character who is [character trait, e.g., overly cautious, recklessly brave].
